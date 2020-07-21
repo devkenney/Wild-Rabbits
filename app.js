@@ -2,9 +2,11 @@ maleNames = ["Romeo", "Donnell", "Carmine", "Nathaniel", "Kraig", "Isaac", "Sonn
 
 femaleNames = ["Lee", "Katelyn", "Joan", "Vickie", "Charlotte", "Heather", "Jeannine", "Mitzi", "Elena", "Katharine", "Ollie", "Carla", "Carol", "Christine", "Carlene", "Meghan", "Daphne", "Noemi", "Briana", "Joyce", "Erin", "Michelle", "Katheryn", "Patty", "Lorene", "Virginia", "Esmeralda", "Tracie", "Frieda", "Yvonne", "Kasey", "Cassandra", "Nona"];
 
-rabbitList = [];
-foodDifference = null;
-rabbitNum = 0;
+let rabbitList = [];
+let foodDifference = null;
+let rabbitNum = 0;
+let extraFood = 0;
+let babyMult = 0;
 
 const randomFoodInterval = (min, max) => {
   return Math.ceil(Math.random() * (max - min + 1) + min);
@@ -17,8 +19,9 @@ const foodCalc = (food) => {
       continue;
     }
   }
-   foodDifference = food - rabbitNum;
-   return foodDifference;
+  foodDifference = food - rabbitNum;
+  extraFood += foodDifference;
+  return extraFood;
 }
 
 rabbit = {
@@ -27,6 +30,7 @@ rabbit = {
   age: 1,
   number: 0,
   alive: true,
+  hadBaby: false,
   randomize () {
     if (Math.random() >= 0.5) {
       rabbit.gender = "male";
@@ -46,7 +50,8 @@ rabbit = {
       number: rabbit.number,
       alive: rabbit.alive,
       mother: mom,
-      father: dad
+      father: dad,
+      hadBaby: false
     }
     rabbitList.push(newRabbit);
     rabbitNum += 1;
@@ -90,4 +95,39 @@ while (numberAnswer) {
   }
 }
 
-console.log(foodCalc(randomFoodInterval(Math.floor(rabbitNum * 0.5), Math.floor(rabbitNum * 1.5))));
+extraFood = foodCalc(randomFoodInterval(Math.floor(rabbitNum * 0.5), Math.floor(rabbitNum * 1.5)));
+
+while (rabbitNum > 0) {
+
+  if (extraFood >= 0) {
+    if (extraFood % 5 === 0) {
+      babyMult += extraFood / 5
+      extraFood -= babyMult * 5
+      for (let i = 0; i < babyMult; i++) {
+        let mommy = null;
+        let daddy = null;
+        for (mom of rabbitList) {
+          if (mom.gender === "female" && mom.hadBaby === false) {
+            mom.hadBaby = true;
+            mommy = mom.number;
+          }
+        }
+        for (dad of rabbitList) {
+          if (dad.gender === "male" && dad.hadBaby === false) {
+            dad.hadBaby = true;
+            daddy = dad.number;
+          }
+        }
+        for (i = 0; i < Math.ceil(Math.random() * 12); i++) {
+          rabbit.add(mommy, daddy);
+        }
+      
+      }
+    } else {
+      for (let i = 0; i > extraFood; i--)
+      rabbit.remove()
+    }
+  }
+  console.log(rabbitNum);
+  rabbitNum = 0;
+}
