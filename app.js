@@ -2,14 +2,6 @@ maleNames = ["Romeo", "Donnell", "Carmine", "Nathaniel", "Kraig", "Isaac", "Sonn
 
 femaleNames = ["Lee", "Katelyn", "Joan", "Vickie", "Charlotte", "Heather", "Jeannine", "Mitzi", "Elena", "Katharine", "Ollie", "Carla", "Carol", "Christine", "Carlene", "Meghan", "Daphne", "Noemi", "Briana", "Joyce", "Erin", "Michelle", "Katheryn", "Patty", "Lorene", "Virginia", "Esmeralda", "Tracie", "Frieda", "Yvonne", "Kasey", "Cassandra", "Nona"];
 
-const genderPick = () => {
-  if (Math.random() < .5) {
-    return 'male'
-  } else {
-    return 'female'
-  }
-}
-
 const nameGen = (gender) => {
   if (gender === 'male') {
     return maleNames[Math.floor(Math.random() * maleNames.length)];
@@ -41,10 +33,12 @@ let RabbitContainer = class {
   constructor(gender) {
     this.gender = gender;
     this.rabbits = [];
+    this.alive = 0
   }
   generateRabbit (name, mom, dad) {
     const newRabbit = new Rabbit(this.rabbits.length + 1, name, this.gender, mom, dad);
     this.rabbits.push(newRabbit);
+    this.alive += 1
   }
 }
 const male = new RabbitContainer('male');
@@ -65,3 +59,6 @@ let Rabbit = class {
 }
 
 startGame();
+
+console.log(male.rabbits);
+console.log(female.rabbits);
