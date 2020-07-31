@@ -122,7 +122,7 @@ let Rabbit = class {
   };
 }
 
-startGame();
+// startGame();
 
 console.log(male.rabbits);
 console.log(female.rabbits);
