@@ -17,59 +17,71 @@ const generateFood = (numRabbits) => {
   return Math.floor(Math.random() * difference) + (numRabbits * .5);
 }
 
-// Passes one season.
-const seasonPass = () => {
-  let numRabbits = male.alive + female.alive;         // calculates the current TOTAL number of rabbits.
-  console.log(numRabbits);
-  let totalFood = generateFood(numRabbits);           // calls the generateFood function to generate food based on the number of rabbits calculated above.
-  console.log(totalFood);
-  let foodDifference = totalFood - numRabbits;        // calculates the difference between the number of rabbits and the amount of food generated.
-  console.log(foodDifference);
-  if (foodDifference < 0) {                           // if the difference in food is a negative number, kills rabbits until there is just enough food to
-    while (foodDifference < 0) {                      // feed all of them.
-      if (Math.random() > 0.5) {                      // picks either male or female and kills one of whichever one it picks.
-        male.killRabbit();
-      } else {
-        female.killRabbit();
-      }
-      foodDifference++;
+
+// initializes the starting rabbits for player and enemy
+const startGame = () => {
+  playerObj.male.generateRabbit(nameGen('male'), null, null);             //makes one male and one female rabbit for the player
+  playerObj.female.generateRabbit(nameGen('female'), null, null);
+  for (let i = 0; i < 8; i++) { 
+    if (Math.random() < 0.5) { 
+      playerObj.male.generateRabbit(nameGen('male'), null, null);         //then makes a random amount of males and females adding
+    } else {                                                              //up to ten total.
+      playerObj.female.generateRabbit(nameGen('female'), null, null);
     }
-  } else if (Math.floor(foodDifference / 2) >= 1) {                   // checks if the difference in food is at least two.
-    let babyMult = Math.floor(foodDifference / 2);
-    for (i = 0; i < babyMult; i++) {                                  // for every 2 extra food, iterates once.
-      for (let i = 0; i < Math.ceil(Math.random() * 3); i++) {
-        let newMom = female.findParent();                             // sets newMom and newDad to the oldest available parents.
-        let newDad = male.findParent();
-        if (Math.random() > .5) {
-          male.generateRabbit(nameGen('male'), newMom, newDad);       // generates a random male or female with the parents that were found above.
-        } else {
-          female.generateRabbit(nameGen('female'), newMom, newDad);
-        }
-      }
-      
-    }
+    $('#player-num-bunnies').text(`x${playerObj.male.alive + playerObj.female.alive}`)
   }
-  console.log(male.alive + female.alive);
+  enemyObj.male.generateRabbit(nameGen('male'), null, null);             //makes one male and one female rabbit for the enemy
+  enemyObj.female.generateRabbit(nameGen('female'), null, null);
+  for (let i = 0; i < 8; i++) { 
+    if (Math.random() < 0.5) { 
+      enemyObj.male.generateRabbit(nameGen('male'), null, null);         //then makes a random amount of males and females adding
+    } else {                                                              //up to ten total.
+      enemyObj.female.generateRabbit(nameGen('female'), null, null);
+    }
+    $('#enemy-num-bunnies').text(`x${enemyObj.male.alive + enemyObj.female.alive}`)
+  }
 }
 
-// initializes the starting rabbits based on how many the player wants.
-let numberAnswer = true;
-const startGame = () => {
-  while (numberAnswer) {                                                                              // while the answer is a number greater than one
-    const startingRabbits = window.prompt("Enter a number of starting rabbits. (At least 2!)");       // prompts the user for input.
-    if (startingRabbits >= 2) {                                                                       // if the prompt is successful generates one male and
-      male.generateRabbit(nameGen('male'), null, null);                                               // then one female to start.
-      female.generateRabbit(nameGen('female'), null, null);
-      for (let i = 0; i < startingRabbits - 2; i++) {                                                 // then generates a random amount of males and females
-        if (Math.random() < 0.5) {                                                                    // based on the number that was input minus two because
-          male.generateRabbit(nameGen('male'), null, null);                                           // two were already created.
+let Player = class {
+  constructor() {
+    this.male = new RabbitContainer('male');
+    this.female = new RabbitContainer('female');
+  };
+  // Passes one season.
+  seasonPass() {
+    let numRabbits = this.male.alive + this.female.alive; // calculates the current TOTAL number of rabbits.
+    console.log(numRabbits);
+    let totalFood = generateFood(numRabbits); // calls the generateFood function to generate food based on the number of rabbits calculated above.
+    console.log(totalFood);
+    let foodDifference = totalFood - numRabbits; // calculates the difference between the number of rabbits and the amount of food generated.
+    console.log(foodDifference);
+    if (foodDifference < 0) { // if the difference in food is a negative number, kills rabbits until there is just enough food to
+      while (foodDifference < 0) { // feed all of them.
+        if (Math.random() > 0.5) { // picks either male or female and kills one of whichever one it picks.
+          this.male.killRabbit();
         } else {
-          female.generateRabbit(nameGen('female'), null, null);
+          this.female.killRabbit();
         }
+        foodDifference++;
       }
-      numberAnswer = false;
+    } else if (Math.floor(foodDifference / 2) >= 1) { // checks if the difference in food is at least two.
+      let babyMult = Math.floor(foodDifference / 2);
+      for (let i = 0; i < babyMult; i++) { // for every 2 extra food, iterates once.
+        for (let i = 0; i < Math.ceil(Math.random() * 3); i++) {
+          let newMom = this.female.findParent(); // sets newMom and newDad to the oldest available parents.
+          let newDad = this.male.findParent();
+          if (Math.random() > .5) {
+            this.male.generateRabbit(nameGen('male'), newMom, newDad); // generates a random male or female with the parents that were found above.
+          } else {
+            this.female.generateRabbit(nameGen('female'), newMom, newDad);
+          }
+        }
+
+      }
     }
+    console.log(this.male.alive + this.female.alive);
   }
+
 }
 
 // container for the male and female rabbits.
@@ -105,8 +117,8 @@ let RabbitContainer = class {
     }
   }
 }
-const male = new RabbitContainer('male');
-const female = new RabbitContainer('female');
+const playerObj = new Player();
+const enemyObj = new Player();
 
 // actual rabbit class.
 let Rabbit = class {
@@ -122,7 +134,8 @@ let Rabbit = class {
   };
 }
 
-// startGame();
-
-console.log(male.rabbits);
-console.log(female.rabbits);
+startGame();
+playerObj.seasonPass();
+enemyObj.seasonPass()
+$('#player-num-bunnies').text(`x${playerObj.male.alive + playerObj.female.alive}`);
+$('#enemy-num-bunnies').text(`x${enemyObj.male.alive + enemyObj.female.alive}`);
