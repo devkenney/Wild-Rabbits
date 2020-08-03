@@ -5,6 +5,53 @@
   /* border: 1px solid gold; */
 }
 
+.bunny-pic {
+  display: inline-block;
+  height: 150px;
+  width: 150px;
+}
+
+.red {
+
+}
+
+.vs-image {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.battle-modal {
+  width: 100%;
+  height: 100%;
+	background-color: rgba(0,0,0,0.6);
+  position: fixed;
+  z-index: 1;
+  display: none;
+}
+
+#versus {
+  height: 30%;
+  width: 20vw;
+}
+
+.player-battle {
+  width: 40vw;
+  height: 100vh;
+}
+
+.enemy-battle {
+  width: 40vw;
+  height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.carrot {
+  width: 20px;
+}
+
 #overkill {
   font-family: 'Sedgwick Ave Display', cursive;
 }
@@ -41,6 +88,14 @@ body {
   border-bottom: 4px solid black;
 }
 
+.territory-body {
+  display: flex;
+}
+
+.food {
+  flex-grow: 2;
+}
+
 #title {
   color: white;
   text-align: center;
@@ -51,6 +106,8 @@ body {
   width: 50%;
   border: 4px solid black;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
