@@ -3,41 +3,61 @@ let Player = class {
     this.male = new RabbitContainer('male');
     this.female = new RabbitContainer('female');
     this.alignment = alignment
+    this.attack = 0;
+    this.defense = 0;
+  };
+  findPower() {
+
   };
   // Passes one season.
   seasonPass() {
-    let numRabbits = this.male.alive + this.female.alive;     // calculates the current TOTAL number of rabbits.
+    let numRabbits = this.male.alive + this.female.alive; // calculates the current TOTAL number of rabbits.
     // console.log(numRabbits);
-    let totalFood = generateFood(numRabbits);                 // calls the generateFood function to generate food based on the number
+    let totalFood = generateFood(numRabbits); // calls the generateFood function to generate food based on the number
     $(`#${this.alignment}-food`).html(`Your bunnies found ${totalFood} <img src="images/food.png" alt="carrot" class="carrot"> this year!`)
     // console.log(totalFood);                                // of rabbits calculated above.
-    let foodDifference = totalFood - numRabbits;              // calculates the difference between the number of rabbits and the
+    let foodDifference = totalFood - numRabbits; // calculates the difference between the number of rabbits and the
     // console.log(foodDifference);                           //amount of food generated.
-    if (foodDifference < 0) {       // if the difference in food is a negative number, kills rabbits until there is just enough food to
-      while (foodDifference < 0) {  // feed all of them.
-        if (Math.random() > 0.5) {  // picks either male or female and kills one of whichever one it picks.
+    if (foodDifference < 0) { // if the difference in food is a negative number, kills rabbits until there is just enough food to
+      while (foodDifference < 0) { // feed all of them.
+        if (Math.random() > 0.5) { // picks either male or female and kills one of whichever one it picks.
           this.male.killRabbit();
         } else {
           this.female.killRabbit();
         }
         foodDifference++;
       }
-    } else if (Math.floor(foodDifference / 2) >= 1) {                       // checks if the difference in food is at least two.
+    } else if (Math.floor(foodDifference / 2) >= 1) { // checks if the difference in food is at least two.
       let babyMult = Math.floor(foodDifference / 2);
-      for (let i = 0; i < babyMult; i++) {                                  // for every 2 extra food, iterates once.
+      for (let i = 0; i < babyMult; i++) { // for every 2 extra food, iterates once.
         for (let i = 0; i < Math.ceil(Math.random() * 2); i++) {
-          let newMom = this.female.findParent();                            // sets newMom and newDad to the oldest available parents.
+          let newMom = this.female.findParent(); // sets newMom and newDad to the oldest available parents.
           let newDad = this.male.findParent();
-          if (Math.random() > .5) {
-            this.male.generateRabbit(nameGen('male'), newMom, newDad);      // generates a random male or female with the parents that were found above.
+          if (newMom === undefined || newDad === undefined) {
+            console.log("no Parents");
           } else {
-            this.female.generateRabbit(nameGen('female'), newMom, newDad);
+            if (Math.random() > .5) {
+              this.male.generateRabbit(nameGen('male'), newMom, newDad); // generates a random male or female with the parents that were found above.
+            } else {
+              this.female.generateRabbit(nameGen('female'), newMom, newDad);
+            }
           }
         }
 
       }
     }
+    $(`#${this.alignment}-num-bunnies`).text(`x${this.male.alive + this.female.alive}`);
     // console.log(this.male.alive + this.female.alive);
+    for (let bunny of this.male.rabbits) {
+      if (bunny.alive === true) {
+        bunny.hadBaby = false;
+      }
+    }
+    for (let bunny of this.female.rabbits) {
+      if (bunny.alive === true) {
+        bunny.hadBaby = false;
+      }
+    }
   }
 
 }
@@ -87,5 +107,7 @@ let Rabbit = class {
     this.hadBaby = false;
     this.mother = mom;
     this.father = dad;
+    this.attack = Math.ceil(Math.random() * 3);
+    this.health = Math.ceil(Math.random() * 3);
   };
 }

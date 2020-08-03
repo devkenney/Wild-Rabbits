@@ -13,8 +13,8 @@ const nameGen = (gender) => {
 
 // Generates food based on the number of currently alive rabbits.
 const generateFood = (numRabbits) => {
-  const difference = (numRabbits * 2) - (numRabbits * .2);
-  return Math.floor(Math.random() * difference) + (numRabbits * .5);
+  const difference = (numRabbits * 2) - (numRabbits * .4);
+  return Math.floor(Math.random() * difference) + (numRabbits * .4);
 }
 
 
