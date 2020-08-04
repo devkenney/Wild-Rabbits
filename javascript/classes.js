@@ -4,10 +4,36 @@ let Player = class {
     this.female = new RabbitContainer('female');
     this.alignment = alignment
     this.attack = 0;
-    this.defense = 0;
+    this.health = 0;
   };
   findPower() {
-
+    for (let bunny of this.male.rabbits) {
+      if (bunny.alive) {
+        this.attack += bunny.attack;
+        this.health += bunny.health;
+      }
+    }
+  };
+  attack(enemy) {
+    //get the difference between this.attack and enemy.health
+    let difference = enemy.health - this.attack;
+    //divide difference by 2
+    difference /= 2;
+    //store enemy.health to a variable
+    let enemyHealth = enemy.health;
+    //subtract difference from variable
+    enemyHealth -= difference;
+    //kill rabbits until enemy.health === variable
+    while (enemy.health > enemyHealth) {
+      if (Math.random() > 0.5) {
+        enemy.male.killRabbit();
+      } else {
+        enemy.female.killRabbit();
+      }
+      enemy.findPower()
+      $(`#${this.alignment}-num-bunnies`).text(`x${this.male.alive + this.female.alive}`);
+    }
+    //call findPower() to re-update enemy's attack and health
   };
   // Passes one season.
   seasonPass() {
@@ -16,9 +42,9 @@ let Player = class {
     let totalFood = generateFood(numRabbits); // calls the generateFood function to generate food based on the number
     $(`#${this.alignment}-food`).html(`Your bunnies found ${totalFood} <img src="images/food.png" alt="carrot" class="carrot"> this year!`)
     // console.log(totalFood);                                // of rabbits calculated above.
-    let foodDifference = totalFood - numRabbits; // calculates the difference between the number of rabbits and the
+    let foodDifference = totalFood - numRabbits;              // calculates the difference between the number of rabbits and the
     // console.log(foodDifference);                           //amount of food generated.
-    if (foodDifference < 0) { // if the difference in food is a negative number, kills rabbits until there is just enough food to
+    if (foodDifference < 0) {      // if the difference in food is a negative number, kills rabbits until there is just enough food to
       while (foodDifference < 0) { // feed all of them.
         if (Math.random() > 0.5) { // picks either male or female and kills one of whichever one it picks.
           this.male.killRabbit();
@@ -27,11 +53,11 @@ let Player = class {
         }
         foodDifference++;
       }
-    } else if (Math.floor(foodDifference / 2) >= 1) { // checks if the difference in food is at least two.
+    } else if (Math.floor(foodDifference / 2) >= 1) {                 // checks if the difference in food is at least two.
       let babyMult = Math.floor(foodDifference / 2);
-      for (let i = 0; i < babyMult; i++) { // for every 2 extra food, iterates once.
+      for (let i = 0; i < babyMult; i++) {                            // for every 2 extra food, iterates once.
         for (let i = 0; i < Math.ceil(Math.random() * 2); i++) {
-          let newMom = this.female.findParent(); // sets newMom and newDad to the oldest available parents.
+          let newMom = this.female.findParent();                      // sets newMom and newDad to the oldest available parents.
           let newDad = this.male.findParent();
           if (newMom === undefined || newDad === undefined) {
             console.log("no Parents");
