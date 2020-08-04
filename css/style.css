@@ -11,8 +11,10 @@
   width: 150px;
 }
 
-.red {
-
+button {
+  font-size: 35px;
+  padding: 0 10px;
+  opacity: 50%;
 }
 
 .vs-image {
