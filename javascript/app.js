@@ -13,6 +13,8 @@ const nameGen = (gender) => {
   }
 }
 
+let battle = false;
+
 let seasonIndex = 1;
 const seasonStuff = () => {
   $('.container').attr('id', seasons[seasonIndex]);
@@ -21,6 +23,8 @@ const seasonStuff = () => {
   if (seasonIndex === 3) {
     $('#battle').css('opacity', '100%');
     $('#defend').css('opacity', '100%')
+    $('#season-pass').css('opacity', '50%');
+    battle = true;
   } else {
     seasonIndex += 1;
   }
@@ -66,10 +70,14 @@ $('#battle').on('click', (event) => {
   if (seasonIndex === 3) {
     $('#battle').css('opacity', '50%');
     $('#defend').css('opacity', '50%');
+    $('.battle-modal').css('display', 'flex')
+    setInterval(() => {$('.battle-modal').css('display', 'none')}, 3000);
     playerObj.attackEnemy(enemyObj, false);
     console.log('enemy has launched a counterattack!')
     enemyObj.attackEnemy(playerObj, false);
     seasonIndex = 0;
+    battle = false;
+    $(`#season-pass`).css('opacity', '100%');
   }
 });
 
@@ -77,12 +85,20 @@ $('#defend').on('click', (event) => {
   if (seasonIndex === 3) {
     $('#battle').css('opacity', '50%');
     $('#defend').css('opacity', '50%');
+    $('.battle-modal').css('display', 'flex')
+    setInterval(() => {$('.battle-modal').css('display', 'none')}, 3000);
     enemyObj.attackEnemy(playerObj, true);
     seasonIndex = 0;
+    battle = false;
+    $(`#season-pass`).css('opacity', '100%');
   }
 })
 
-
+$('#season-pass').on('click', (event) => {
+  if (!battle) {
+    seasonStuff()
+  }
+})
 
 
 

@@ -54,7 +54,7 @@ let Player = class {
       let numRabbits = this.male.alive + this.female.alive; // calculates the current TOTAL number of rabbits.
       // console.log(numRabbits);
       let totalFood = generateFood(numRabbits); // calls the generateFood function to generate food based on the number
-      $(`#${this.alignment}-food`).html(`Your bunnies found ${totalFood} <img src="images/food.png" alt="carrot" class="carrot"> this year!`)
+      $(`#${this.alignment}-food`).html(`Your bunnies found ${totalFood} <img src="images/food.png" alt="carrot" class="carrot"> this season!`)
       // console.log(totalFood);                                // of rabbits calculated above.
       let foodDifference = totalFood - numRabbits; // calculates the difference between the number of rabbits and the
       // console.log(foodDifference);                           //amount of food generated.
@@ -68,6 +68,7 @@ let Player = class {
           foodDifference++;
           numDead++
         }
+        $(`#${this.alignment}-loss`).text(`${this.alignment} lost ${numDead} bunnies this season!`);
         console.log(`${this.alignment} lost ${numDead} rabbits.`)
       } else if (Math.floor(foodDifference / 2) >= 1) { // checks if the difference in food is at least two.
         let babyMult = Math.floor(foodDifference / 2);
@@ -84,9 +85,13 @@ let Player = class {
                 this.female.generateRabbit(nameGen('female'), newMom, newDad);
               }
             }
+            numNew++
           }
 
         }
+        $(`#${this.alignment}-loss`).text(`${this.alignment} gained ${numNew} bunnies this season!`);
+      } else {
+        $(`#${this.alignment}-loss`).text(`${this.alignment} didn't gain or lose any bunnies!`)
       }
       $(`#${this.alignment}-num-bunnies`).text(`x${this.male.alive + this.female.alive}`);
       // console.log(this.male.alive + this.female.alive);

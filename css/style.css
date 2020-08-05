@@ -10,6 +10,7 @@
   display: inline-block;
   height: 150px;
   width: 150px;
+  margin: 5px;
 }
 
 button {
@@ -38,6 +39,10 @@ button {
   margin: 0 0 5px 0;
 }
 
+#season-pass {
+  opacity: 100%;
+}
+
 .battle-modal {
   width: 100%;
   height: 100%;
@@ -45,6 +50,7 @@ button {
   position: fixed;
   z-index: 1;
   display: none;
+  transition-duration: 2s;
 }
 
 #versus {
@@ -55,14 +61,19 @@ button {
 .player-battle {
   width: 40vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
 }
 
 .enemy-battle {
   width: 40vw;
   height: 100vh;
   display: flex;
-  align-items: flex-end;
   flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .carrot {
