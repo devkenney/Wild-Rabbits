@@ -3,6 +3,7 @@
   padding: 0;
   font-family: 'Sue Ellen Francisco', cursive;
   /* border: 1px solid gold; */
+  transition-duration: 1s;
 }
 
 .bunny-pic {
@@ -15,12 +16,26 @@ button {
   font-size: 35px;
   padding: 0 10px;
   opacity: 50%;
+  transition-duration: 1s;
 }
 
 .vs-image {
   height: 100vh;
   display: flex;
   align-items: center;
+}
+
+#battle {
+  width: 200px;
+}
+
+#defend {
+  width: 200px;
+}
+
+.battle-buttons {
+  justify-self: flex-end;
+  margin: 0 0 5px 0;
 }
 
 .battle-modal {
@@ -77,6 +92,7 @@ body {
 
 .bunny-icon {
   width: 50px;
+  height: 50px;
   cursor: pointer;
   transition-duration: .5s;
 }
@@ -94,8 +110,11 @@ body {
   display: flex;
 }
 
-.food {
+.food-losses {
+  display: flex;
   flex-grow: 2;
+  justify-content: center;
+  flex-direction: column;
 }
 
 #title {
@@ -110,6 +129,7 @@ body {
   text-align: center;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 header {
@@ -130,6 +150,7 @@ footer {
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
+  transition-duration: 1s;
 }
 
 #fall {
